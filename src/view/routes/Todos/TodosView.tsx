@@ -1,5 +1,6 @@
 import { faToggleOn } from "@fortawesome/free-solid-svg-icons";
 import { Container, Row, Col } from "reactstrap";
+import { TodosViewModel } from "../../../viewmodel";
 import {
   IconContainer,
   Title,
@@ -9,7 +10,11 @@ import {
   ListContainer,
 } from "../../components";
 
-export default function TodosView() {
+interface TodosViewProps {
+  editor: TodosViewModel;
+}
+
+export default function TodosView(editor: TodosViewProps) {
   return (
     <Container>
       <IconContainer>

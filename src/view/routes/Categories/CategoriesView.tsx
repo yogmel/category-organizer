@@ -9,8 +9,13 @@ import {
   ToggleIcon,
 } from "../../components";
 import { faToggleOn } from "@fortawesome/free-solid-svg-icons";
+import { CategoriesViewModel } from "../../../viewmodel";
 
-export default function CategoriesView() {
+interface CategoriesViewProps {
+  editor: CategoriesViewModel;
+}
+
+export default function CategoriesView(editor: CategoriesViewProps) {
   return (
     <Container>
       <IconContainer>
