@@ -1,25 +1,32 @@
-import { faToggleOn } from "@fortawesome/free-solid-svg-icons";
+import React, { useCallback } from "react";
+import { observer } from "mobx-react";
 import { Container, Row, Col } from "reactstrap";
+import { ViewType } from "../../../model";
 import { TodosViewModel } from "../../../viewmodel";
+import { Header } from "../../components";
 import {
   IconContainer,
-  Title,
-  ToggleIcon,
   LeftSubTitle,
   RightSubTitle,
   ListContainer,
-} from "../../components";
+} from "../../styled";
 
 interface TodosViewProps {
   editor: TodosViewModel;
+  changeView: (value: ViewType) => void;
 }
 
-export default function TodosView(editor: TodosViewProps) {
+function TodosView(props: TodosViewProps) {
+  const { changeView } = props;
+
+  const handleChangeView = useCallback(() => {
+    changeView(ViewType.Categories);
+  }, []);
+
   return (
     <Container>
       <IconContainer>
-        <Title>Todos</Title>
-        <ToggleIcon icon={faToggleOn} size="2x" inverse />
+        <Header title="Todos" onClick={handleChangeView} />
       </IconContainer>
 
       <Row className="mt-4">
@@ -45,3 +52,5 @@ export default function TodosView(editor: TodosViewProps) {
     </Container>
   );
 }
+
+export default observer(TodosView);

@@ -1,3 +1,1 @@
-export * from "./Text";
-export * from "./List";
-export * from "./ToggleIcon";
+export { default as Header } from "./Header";

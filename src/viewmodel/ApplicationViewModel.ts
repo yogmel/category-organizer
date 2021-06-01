@@ -1,3 +1,4 @@
+import { makeAutoObservable } from "mobx";
 import { CategoriesViewModel } from "./CategoriesViewModel";
 import { TodosViewModel } from "./TodosViewModel";
 
@@ -7,9 +8,9 @@ export class ApplicationViewModel {
   todosViewModel: TodosViewModel;
 
   private constructor() {
-    console.log("Application View Model called!");
-    this.categoriesViewModel = new CategoriesViewModel();
+    makeAutoObservable(this);
     this.todosViewModel = new TodosViewModel();
+    this.categoriesViewModel = new CategoriesViewModel(this.todosViewModel);
   }
 
   static getInstance(): ApplicationViewModel {

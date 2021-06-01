@@ -1,58 +1,52 @@
-import { Button, Col, Container, Input, InputGroup, Row } from "reactstrap";
-import {
-  CheckboxList,
-  CheckboxListContainer,
-  IconContainer,
-  LeftSubTitle,
-  RightSubTitle,
-  Title,
-  ToggleIcon,
-} from "../../components";
-import { faToggleOn } from "@fortawesome/free-solid-svg-icons";
-import { CategoriesViewModel } from "../../../viewmodel";
+import { Container, Row } from "reactstrap";
+import { IconContainer } from "../../styled";
+import { CategoriesViewModel, TodosViewModel } from "../../../viewmodel";
+import { ViewType } from "../../../model";
+import React, { useCallback, useState } from "react";
+import { Header } from "../../components";
+import { AddCategoryColumn, AllCategoriesColumn } from "./components";
+import { observer } from "mobx-react";
 
 interface CategoriesViewProps {
   editor: CategoriesViewModel;
+  todoEditor: TodosViewModel;
+  changeView: (value: ViewType) => void;
 }
 
-export default function CategoriesView(editor: CategoriesViewProps) {
+function CategoriesView(props: CategoriesViewProps) {
+  const { editor, changeView, todoEditor } = props;
+
+  const [category, setCategory] = useState<string>("");
+
+  const handleChangeView = useCallback(() => {
+    changeView(ViewType.Todos);
+  }, []);
+
+  const handleCategoryInputChange = useCallback((e) => {
+    setCategory(e.target.value);
+  }, []);
+
+  const addCategory = () => {
+    editor.addCategory(category);
+    setCategory("");
+  };
+
   return (
     <Container>
       <IconContainer>
-        <Title>Categories</Title>
-        <ToggleIcon icon={faToggleOn} size="2x" inverse />
+        <Header title="Category" onClick={handleChangeView} />
       </IconContainer>
 
       <Row className="mt-4">
-        <Col>
-          <LeftSubTitle>Add new category</LeftSubTitle>
-          <InputGroup className="mt-4">
-            <Input placeholder="New category" type="text" />
-          </InputGroup>
-          <Button className="w-100 mt-3" outline color="primary">
-            Add
-          </Button>
-        </Col>
-        <Col>
-          <RightSubTitle>All categories</RightSubTitle>
-          <CheckboxListContainer className="mt-4 text-left">
-            <h5>Cake Factory</h5>
-            <CheckboxList>
-              <li>
-                <Input
-                  addon
-                  type="checkbox"
-                  aria-label="Checkbox for following text input"
-                />
-                Aloka
-              </li>
-            </CheckboxList>
-            <Button outline color="primary">
-              Add new todo
-            </Button>
-          </CheckboxListContainer>
-        </Col>
+        <AddCategoryColumn
+          category={category}
+          handleCategoryInputChange={handleCategoryInputChange}
+          addCategory={addCategory}
+        />
+        <AllCategoriesColumn editor={editor} todoEditor={todoEditor} />
       </Row>
     </Container>
   );
 }
+
+export default observer(CategoriesView);
