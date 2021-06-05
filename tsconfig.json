@@ -22,5 +22,10 @@
   },
   "include": [
     "src"
-  ]
+  ],
+  "baseUrl": "src",
+  "paths": {
+    "view/*": ["view/*"],
+    "@viewmodel": ["./viewmodel"],
+  }
 }
