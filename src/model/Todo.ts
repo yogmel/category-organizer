@@ -7,4 +7,8 @@ export class Todo {
   constructor(data: Partial<Todo> = {}) {
     Object.assign(this, data);
   }
+
+  copy(data: Partial<Todo>): Todo {
+    return Object.assign(this, data);
+  }
 }

@@ -12,12 +12,12 @@ interface ModalAddTodoProps {
   modal: boolean;
   todoInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
   addTodo: (categoryId: number) => void;
-  categoryId: number;
+  categoryId?: number;
   closeModal: () => void;
 }
 
 export default function ModalAddTodo(props: ModalAddTodoProps) {
-  const { modal, todoInputChange, addTodo, categoryId, closeModal } = props;
+  const { modal, todoInputChange, addTodo, categoryId = 0, closeModal } = props;
 
   return (
     <Modal isOpen={modal} keyboard={true}>
@@ -32,7 +32,7 @@ export default function ModalAddTodo(props: ModalAddTodoProps) {
       <ModalFooter>
         <Button color="primary" onClick={() => addTodo(categoryId)}>
           Add
-        </Button>{" "}
+        </Button>
         <Button color="secondary" onClick={closeModal}>
           Cancel
         </Button>

@@ -4,6 +4,8 @@ import { Todo } from "../model/Todo";
 export class TodosViewModel {
   todos: Todo[] = [];
   id = 0;
+  isUpdating = false;
+  editingTodo?: Todo;
 
   constructor() {
     makeAutoObservable(this);
@@ -19,11 +21,27 @@ export class TodosViewModel {
     return this.todos.find((todo) => todo.id === todoId);
   }
 
+  get completedTodos(): Todo[] | undefined {
+    return this.todos.filter((todo) => todo.checked);
+  }
+
+  get uncompletedTodos(): Todo[] | undefined {
+    return this.todos.filter((todo) => !todo.checked);
+  }
+
+  setIsUpdating(value: boolean): void {
+    this.isUpdating = value;
+  }
+
+  setEditingTodo(value?: Todo): void {
+    this.editingTodo = value;
+  }
+
   update(todoId: number, data: Partial<Todo>) {
-    let todo = this.getTodo(todoId);
+    const todo = this.getTodo(todoId);
     if (todo && data) {
-      todo = { ...todo, ...data };
+      console.log("aloka", todo.copy(data));
+      this.setEditingTodo(todo.copy(data));
     }
-    console.log("todo vm", todo);
   }
 }

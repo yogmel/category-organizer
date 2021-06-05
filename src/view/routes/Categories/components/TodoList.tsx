@@ -6,7 +6,7 @@ import { Todo } from "../../../../model/Todo";
 import { TodosViewModel } from "../../../../viewmodel";
 import { useCategoryTodos } from "../../../hooks/useCategoryTodos";
 import { CheckboxList } from "../../../styled";
-import { autorun } from "mobx";
+import { autorun, reaction } from "mobx";
 
 interface TodoListProps {
   category: Category;
@@ -22,6 +22,13 @@ function TodoList(props: TodoListProps) {
     const todos2 = useCategoryTodos(category.todos, todoEditor.todos);
     console.log("todos2", todos2);
   });
+
+  reaction(
+    () => todoEditor.isUpdating,
+    () => {
+      console.log("todoEditor", todoEditor.todos);
+    }
+  );
 
   const handleCheckboxChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>, todo: Todo) => {

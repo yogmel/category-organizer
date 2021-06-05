@@ -1,9 +1,10 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useCallback, useState } from "react";
-import "./App.css";
-import { ViewType } from "./model";
-import { useApplicationViewModel } from "./view/hooks";
-import { CategoriesView, TodosView } from "./view/routes";
+import React, { useCallback, useState } from "react";
+import "./styles/App.css";
+import { ViewType } from "./../../../model";
+import { useApplicationViewModel } from "./../../hooks";
+import { CategoriesView } from "../Categories";
+import { TodosView } from "../Todos";
 
 function App() {
   const [view, setView] = useState(ViewType.Categories);
@@ -22,7 +23,11 @@ function App() {
         changeView={changeView}
       />
     ) : (
-      <TodosView editor={todosViewModel} changeView={changeView} />
+      <TodosView
+        editor={todosViewModel}
+        categoryEditor={categoriesViewModel}
+        changeView={changeView}
+      />
     );
   };
 
