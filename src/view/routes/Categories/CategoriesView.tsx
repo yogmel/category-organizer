@@ -1,35 +1,23 @@
 import { Container, Row } from "reactstrap";
 import { IconContainer } from "../../styled";
-import { CategoriesViewModel, TodosViewModel } from "../../../viewmodel";
+import { CategoriesViewModel } from "../../../viewmodel";
 import { ViewType } from "../../../model";
-import React, { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { Header } from "../../components";
 import { AddCategoryColumn, AllCategoriesColumn } from "./components";
 import { observer } from "mobx-react";
 
 interface CategoriesViewProps {
   editor: CategoriesViewModel;
-  todoEditor: TodosViewModel;
   changeView: (value: ViewType) => void;
 }
 
 function CategoriesView(props: CategoriesViewProps) {
-  const { editor, changeView, todoEditor } = props;
-
-  const [category, setCategory] = useState<string>("");
+  const { editor, changeView } = props;
 
   const handleChangeView = useCallback(() => {
     changeView(ViewType.Todos);
   }, []);
-
-  const handleCategoryInputChange = useCallback((e) => {
-    setCategory(e.target.value);
-  }, []);
-
-  const addCategory = () => {
-    editor.addCategory(category);
-    setCategory("");
-  };
 
   return (
     <Container>
@@ -38,12 +26,8 @@ function CategoriesView(props: CategoriesViewProps) {
       </IconContainer>
 
       <Row className="mt-4">
-        <AddCategoryColumn
-          category={category}
-          handleCategoryInputChange={handleCategoryInputChange}
-          addCategory={addCategory}
-        />
-        <AllCategoriesColumn editor={editor} todoEditor={todoEditor} />
+        <AddCategoryColumn editor={editor} />
+        <AllCategoriesColumn editor={editor} />
       </Row>
     </Container>
   );

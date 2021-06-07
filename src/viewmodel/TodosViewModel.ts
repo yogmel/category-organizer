@@ -40,7 +40,6 @@ export class TodosViewModel {
   update(todoId: number, data: Partial<Todo>) {
     const todo = this.getTodo(todoId);
     if (todo && data) {
-      console.log("aloka", todo.copy(data));
       this.setEditingTodo(todo.copy(data));
     }
   }

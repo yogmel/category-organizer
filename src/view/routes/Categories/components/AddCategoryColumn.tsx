@@ -1,15 +1,19 @@
-import React, { ChangeEvent } from "react";
+import { observer } from "mobx-react";
+import React, { ChangeEvent, useCallback } from "react";
 import { Button, Col, Input, InputGroup } from "reactstrap";
+import { CategoriesViewModel } from "../../../../viewmodel";
 import { LeftSubTitle } from "../../../styled";
 
 interface AddCategoryColumnProps {
-  category: string;
-  handleCategoryInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  addCategory: () => void;
+  editor: CategoriesViewModel;
 }
 
-export default function AddCategoryTodoColumn(props: AddCategoryColumnProps) {
-  const { category, handleCategoryInputChange, addCategory } = props;
+export function AddCategoryTodoColumn(props: AddCategoryColumnProps) {
+  const { editor } = props;
+
+  const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    editor.setEditingCategoryName(e.target.value);
+  }, []);
 
   return (
     <Col>
@@ -18,18 +22,20 @@ export default function AddCategoryTodoColumn(props: AddCategoryColumnProps) {
         <Input
           placeholder="New category"
           type="text"
-          value={category}
-          onChange={handleCategoryInputChange}
+          value={editor.editingCategoryName}
+          onChange={onChange}
         />
       </InputGroup>
       <Button
         className="w-100 mt-3"
         outline
         color="primary"
-        onClick={addCategory}
+        onClick={editor.addCategory}
       >
         Add
       </Button>
     </Col>
   );
 }
+
+export default observer(AddCategoryTodoColumn);

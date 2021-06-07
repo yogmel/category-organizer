@@ -1,39 +1,23 @@
 import React, { useCallback } from "react";
 import { observer } from "mobx-react";
 import { Container, Row, Col } from "reactstrap";
-import { Category, ViewType } from "../../../model";
-import { CategoriesViewModel, TodosViewModel } from "../../../viewmodel";
+import { ViewType } from "../../../model";
+import { TodosViewModel } from "../../../viewmodel";
 import { Header } from "../../components";
-import {
-  IconContainer,
-  LeftSubTitle,
-  RightSubTitle,
-  ListContainer,
-} from "../../styled";
+import { IconContainer, LeftSubTitle, RightSubTitle } from "../../styled";
+import List from "./List";
 
 interface TodosViewProps {
   editor: TodosViewModel;
-  categoryEditor: CategoriesViewModel;
   changeView: (value: ViewType) => void;
 }
 
 function TodosView(props: TodosViewProps) {
-  const { editor, categoryEditor, changeView } = props;
-
-  console.log("uncompleted", editor.uncompletedTodos);
-  console.log("completed", editor.completedTodos);
+  const { editor, changeView } = props;
 
   const handleChangeView = useCallback(() => {
     changeView(ViewType.Categories);
   }, []);
-
-  const getCategoryById = (categoryId: number): string => {
-    const category = categoryEditor.categories.find(
-      (category) => category.id === categoryId
-    );
-
-    return category?.name || "";
-  };
 
   return (
     <Container>
@@ -44,27 +28,11 @@ function TodosView(props: TodosViewProps) {
       <Row className="mt-4">
         <Col>
           <LeftSubTitle>Completed</LeftSubTitle>
-          <ListContainer>
-            <h5>Cake Factory</h5>
-            <ul>
-              {editor.completedTodos?.map((todo) => (
-                <li key={todo.id}>{todo.description}</li>
-              ))}
-            </ul>
-          </ListContainer>
+          <List todos={editor.completedTodos} />
         </Col>
         <Col>
           <RightSubTitle>Not Completed</RightSubTitle>
-          <ListContainer>
-            <h5>Cake Factory</h5>
-            <ul>
-              {editor.uncompletedTodos?.map((todo) => (
-                <li key={todo.id}>
-                  {todo.description} ({getCategoryById(todo.categoryId)})
-                </li>
-              ))}
-            </ul>
-          </ListContainer>
+          <List todos={editor.uncompletedTodos} />
         </Col>
       </Row>
     </Container>

@@ -3,12 +3,12 @@ import React, { useMemo } from "react";
 import { Title, ToggleIcon } from "../styled";
 
 interface HeaderProps {
-  onClick: () => void;
   title: string;
+  onClick: () => void;
 }
 
 export default function Header(props: HeaderProps) {
-  const { onClick, title } = props;
+  const { title, onClick } = props;
 
   const icon = useMemo(() => {
     return title === "Category" ? faToggleOn : faToggleOff;

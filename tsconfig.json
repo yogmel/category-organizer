@@ -23,9 +23,9 @@
   "include": [
     "src"
   ],
-  "baseUrl": "src",
+  "baseUrl": "./src",
   "paths": {
     "view/*": ["view/*"],
-    "@viewmodel": ["./viewmodel"],
+    "@viewmodel": ["viewmodel/*"],
   }
 }

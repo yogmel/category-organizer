@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import { useCallback } from "react";
 import {
   Button,
   Input,
@@ -7,17 +7,24 @@ import {
   ModalFooter,
   ModalHeader,
 } from "reactstrap";
+import { CategoriesViewModel } from "../../../../viewmodel";
 
 interface ModalAddTodoProps {
   modal: boolean;
-  todoInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  addTodo: (categoryId: number) => void;
-  categoryId?: number;
-  closeModal: () => void;
+  editor: CategoriesViewModel;
 }
 
 export default function ModalAddTodo(props: ModalAddTodoProps) {
-  const { modal, todoInputChange, addTodo, categoryId = 0, closeModal } = props;
+  const { modal, editor } = props;
+
+  const addTodo = () => {
+    editor.addTodo();
+    editor.reset();
+  };
+
+  const onChange = useCallback((e) => {
+    editor.setEditingTodo(e.target.value);
+  }, []);
 
   return (
     <Modal isOpen={modal} keyboard={true}>
@@ -25,15 +32,15 @@ export default function ModalAddTodo(props: ModalAddTodoProps) {
       <ModalBody>
         <Input
           type="text"
-          onChange={todoInputChange}
+          onChange={onChange}
           aria-label="Input for adding todo description"
         />
       </ModalBody>
       <ModalFooter>
-        <Button color="primary" onClick={() => addTodo(categoryId)}>
+        <Button color="primary" onClick={addTodo}>
           Add
         </Button>
-        <Button color="secondary" onClick={closeModal}>
+        <Button color="secondary" onClick={editor.reset}>
           Cancel
         </Button>
       </ModalFooter>
