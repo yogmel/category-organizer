@@ -13,8 +13,6 @@ interface AllCategoriesColumnProps {
 function AllCategoriesColumn(props: AllCategoriesColumnProps) {
   const { editor } = props;
 
-  console.log("editor", editor);
-
   return (
     <Col>
       <RightSubTitle>All categories</RightSubTitle>

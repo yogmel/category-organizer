@@ -13,18 +13,6 @@ function TodoListItem(props: TodoListItemProps) {
     todo: { id, checked, description },
   } = props;
 
-  // autorun(() => {
-  //   const todos2 = useTodosById(category.todos);
-  //   console.log("todos2", todos2);
-  // });
-
-  // reaction(
-  //   () => todoEditor.isUpdating,
-  //   () => {
-  //     console.log("todoEditor", todoEditor.todos);
-  //   }
-  // );
-
   const { todosViewModel } = useApplicationViewModel();
 
   const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {

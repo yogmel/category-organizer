@@ -11,8 +11,8 @@ export class TodosViewModel {
     makeAutoObservable(this);
   }
 
-  add(description: string): Todo {
-    const newTodo = new Todo({ id: this.id++, description });
+  add(categoryId: number, description: string): Todo {
+    const newTodo = new Todo({ id: this.id++, description, categoryId });
     this.todos.push(newTodo);
     return newTodo;
   }

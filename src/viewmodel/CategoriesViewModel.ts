@@ -6,9 +6,10 @@ import { TodosViewModel } from "./TodosViewModel";
 export class CategoriesViewModel {
   id = 0;
   categories: Category[] = [];
+  categoryTodosNumbers: number[] = [];
   editingCategoryName = "";
   editingCategory?: Category;
-  editingTodo?: string;
+  editingTodo: string | undefined;
 
   constructor(private todosViewModel: TodosViewModel) {
     makeAutoObservable(this);
@@ -16,6 +17,16 @@ export class CategoriesViewModel {
 
   get allTodos(): Todo[] {
     return this.todosViewModel.todos;
+  }
+
+  setCategoryTodos = (value: number[]): void => {
+    this.categoryTodosNumbers = value;
+  };
+
+  get categoryTodos(): Todo[] {
+    return this.todosViewModel.todos.filter((todo) =>
+      this.categoryTodosNumbers.includes(todo.id)
+    );
   }
 
   setId(value: number) {
@@ -36,11 +47,11 @@ export class CategoriesViewModel {
     this.editingCategoryName = name;
   }
 
-  setEditingCategory = (category: Category) => {
+  setEditingCategory = (category: Category | undefined) => {
     this.editingCategory = category;
   };
 
-  setEditingTodo = (description: string) => {
+  setEditingTodo = (description: string | undefined) => {
     this.editingTodo = description;
   };
 
@@ -49,16 +60,19 @@ export class CategoriesViewModel {
   }
 
   addTodo(): void {
-    if (this.editingTodo) {
-      const todo = this.todosViewModel.add(this.editingTodo);
-      this.editingCategory?.addTodo(todo.id);
+    if (this.editingTodo && this.editingCategory) {
+      const todo = this.todosViewModel.add(
+        this.editingCategory.id,
+        this.editingTodo
+      );
+      this.editingCategory.addTodo(todo.id);
     }
   }
 
-  reset() {
-    this.editingTodo = undefined;
-    this.editingCategory = undefined;
-  }
+  reset = () => {
+    this.setEditingTodo(undefined);
+    this.setEditingCategory(undefined);
+  };
 
   updateTodo(todoId: number, data: Partial<Todo>) {
     this.todosViewModel.update(todoId, data);
